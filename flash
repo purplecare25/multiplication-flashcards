@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplication Flashcards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .flashcard-container {
+            text-align: center;
+        }
+        .flashcard {
+            width: 200px;
+            height: 150px;
+            background-color: #ffeb3b;
+            color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transform: rotateY(0deg);
+            transition: transform 0.5s;
+        }
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+            background-color: #4caf50;
+            color: #fff;
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .progress {
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="flashcard-container">
+        <div id="flashcard" class="flashcard" onclick="flipCard()">
+            <span id="card-content">?</span>
+        </div>
+        <div class="controls">
+            <button class="button" onclick="generateFlashcard()">New Problem</button>
+        </div>
+        <div class="progress">
+            Correct Answers: <span id="correct-count">0</span>
+        </div>
+    </div>
+
+    <script>
+        let correctCount = 0;
+        let currentProblem = {};
+        let isAnswerVisible = false;
+
+        function generateFlashcard() {
+            const num1 = Math.floor(Math.random() * 12) + 1;
+            const num2 = Math.floor(Math.random() * 12) + 1;
+            currentProblem = { num1, num2, answer: num1 * num2 };
+
+            const flashcard = document.getElementById('flashcard');
+            flashcard.classList.remove('flipped');
+            document.getElementById('card-content').textContent = `${num1} × ${num2}`;
+            isAnswerVisible = false;
+        }
+
+        function flipCard() {
+            const flashcard = document.getElementById('flashcard');
+            if (!isAnswerVisible) {
+                flashcard.classList.add('flipped');
+                document.getElementById('card-content').textContent = currentProblem.answer;
+                correctCount++;
+                document.getElementById('correct-count').textContent = correctCount;
+                isAnswerVisible = true;
+            } else {
+                flashcard.classList.remove('flipped');
+                document.getElementById('card-content').textContent = `${currentProblem.num1} × ${currentProblem.num2}`;
+                isAnswerVisible = false;
+            }
+        }
+
+        // Initialize with the first problem
+        generateFlashcard();
+    </script>
+</body>
+</html>
